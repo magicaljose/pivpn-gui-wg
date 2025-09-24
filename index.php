@@ -155,11 +155,7 @@ function body(){
     			</div>
     			<div class="collapse navbar-collapse" id="myNavbar">
     			<ul class="nav navbar-nav">
-      				<li>&nbsp;</li>
-      				<li>&nbsp;</li>
       				<li><a href="#" onclick="pageLoad('PiVPN');"><i class="fa fa-lock fa-fw"></i> PiVPN Profiles</a></li>
-      				<li>&nbsp;</li>
-      				<li>&nbsp;</li>
                     <li class="dropdown">
         				<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-power-off fa-fw"></i> Power Options</a>
         				<ul class="dropdown-menu">

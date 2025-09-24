@@ -3,16 +3,18 @@
 session_start();
 include('app/functions.php');
 if(!isset($_SESSION['username'])){
-	die("You must be logged in to view this page!");
+       die("You must be logged in to view this page!");
 }
 if(!isset($_POST['profile'])){ die("No profile name selected!"); }
 $pro = $_POST['profile'];
-$pro = str_replace("/home/pi/ovpns/","", $pro);
-$pro = str_replace(".ovpn","", $pro);
+$config = parse_ini_file('/etc/pivpn/wireguard/setupVars.conf', false);
+$ihome = $config['install_home'];
+$pro = str_replace($ihome."/configs/","", $pro);
+$pro = str_replace(".conf","", $pro);
 add_vpn_profile($pro);
 //Run selected script, but only if it exists in the scr_up folder.
 function add_vpn_profile($profile) {
-	
+       
     // Open a handle to expect in write mode
     $p = popen('sudo /usr/bin/expect','w');
 
@@ -23,18 +25,17 @@ function add_vpn_profile($profile) {
     // Spawn a shell as $user
     $cmd .= "spawn /bin/bash; ";
     // Change the unix password
-    $cmd .= "send \"pivpn revoke\\r\"; ";
-    $cmd .= "expect \"Please enter the Name of the client to be revoked from the list above:\\r\"; ";
-    $cmd .= "send \"$profile\\r\"; ";
-    $cmd .= "expect \"Completed!\"; ";
+    $cmd .= "send \"pivpn remove $profile\\r\"; ";
+    $cmd .= "expect \"Do you really want to delete $profile? \[y/N\] \"; ";
+    $cmd .= "send \"y\\r\"; ";
+    $cmd .= "expect \"WireGuard reloaded\"; ";
     // Commit the command to expect & close
     fwrite($p, $cmd); pclose ($p);
 
     // Read & delete the log
-    $fp = fopen($log,r);
-    $output = fread($fp, 2048);
-    fclose($fp); unlink($log);
-	print "Notification : $output ";
+    $output = shell_exec("cat $log | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g'");
+    unlink($log);
+    print "Notification : $output ";
     $output = explode("\n",$output);
 
 

@@ -381,18 +381,16 @@ function runScript(filename){
 function oProfile(){
 	load(true)
 	user = document.getElementById("profile_name").value;
-	days = document.getElementById("expiration_days").value;
 	$.ajax({
 		method:'post',
 		url:'./app/profile.php',
 		data:{
-			profile:user,
-			days:days
+			profile:user
 		},
 		success:function(result) {
 			load(false);
 			genModal("Profile creation status (" + user + "):", '<pre style="overscroll-y:scroll; max-height:400px;">' + result + "</pre>");
-			pageLoad('openvpn');
+			pageLoad('PiVPN');
 			
 		}
 		}).fail(function(e) {
@@ -406,14 +404,34 @@ function rProfile(user){
 	load(true)
 	$.ajax({
 		method:'post',
-		url:'./app/profile-revoke.php',
+		url:'./app/profile-remove.php',
 		data:{
 			profile:user
 		},
 		success:function(result) {
 			load(false);
-			genModal("Profile revoke status (" + user + "):", '<pre style="overscroll-y:scroll; max-height:400px;">' + result + "</pre>");
-			pageLoad('openvpn');
+			genModal("Profile removal status (" + user + "):", '<pre style="overscroll-y:scroll; max-height:400px;">' + result + "</pre>");
+			pageLoad('PiVPN');
+			
+		}
+		}).fail(function(e) {
+			load(false);
+			genModal("Error", e);
+		});
+	
+	
+}
+function qrProfile(filename){
+	load(true)
+	$.ajax({
+		method:'post',
+		url:'./app/profile-qrcode.php',
+		data:{
+			profile:filename
+		},
+		success:function(result) {
+			load(false);
+			genModal("WireGuard Profile \"" + filename + "\" content:<br><small>Scan the QR code to view profile</small>", "<pre class=\"ativa-scroll\">" + result + "</pre>");
 			
 		}
 		}).fail(function(e) {
@@ -424,9 +442,8 @@ function rProfile(user){
 	
 }
 function createProfile(){
-	profileForm = '<input class="form-control" type="text" placeholder="Profile Name" name="profile_name" id="profile_name">';
-	profileForm += '<br /><input class="form-control" type="text" placeholder="Expiration Days" name="expiration_days" id="expiration_days">';
-	profileForm += '<br /><br /> <button class="btn btn-sm btn-raised btn-info pull-right" type="button" onclick="oProfile();">Create Profile</button><br /><br />';
+        profileForm = '<input class="form-control" type="text" placeholder="Profile name" name="profile_name" id="profile_name">';
+        profileForm += '<br /><br /> <button class="btn btn-sm btn-raised btn-info pull-right" type="button" onclick="oProfile();">Create Profile</button><br /><br />';
 
 	genModal("Create new PiVPN Profile", profileForm);
 
@@ -461,7 +478,7 @@ function displayProfile(filename){
 		},
 		success:function(result) {
 			load(false);
-			genModal("OpenVPN Profile \"" + filename + "\" content:<br><small>Copy and paste into an OVPN file to use</small>", "<pre class=\"ativa-scroll\">" + result + "</pre>");
+			genModal("WireGuard Profile \"" + filename + "\" content:<br><small>Copy and paste into a WireGuard .conf file to use</small>", "<pre class=\"ativa-scroll\">" + result + "</pre>");
 			
 		}
 		}).fail(function(e) {

@@ -6,7 +6,7 @@ if(!isset($_SESSION['username'])){
 if(isset($_POST['page'])){
 	switch($_POST['page']){
 		case "PiVPN":
-			openvpn();
+			vpn_profiles();
 			break;
 		default:
 			echo "404 - Page not found!";
@@ -16,7 +16,7 @@ if(isset($_POST['page'])){
 }
 
 //Simple page functions..
-function openvpn(){
-	include('pages/openvpn.php');
+function vpn_profiles(){
+	include('pages/wireguard.php');
 }
 ?>
