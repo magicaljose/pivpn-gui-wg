@@ -33,7 +33,7 @@ function add_vpn_profile($profile) {
     // Read & delete the log
     $output = shell_exec("cat $log | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g'");
     unlink($log);
-	print "Notification : $output ";
+	print $output;
     $output = explode("\n",$output);
 
 

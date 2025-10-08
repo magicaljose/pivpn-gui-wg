@@ -11,9 +11,9 @@ $config = parse_ini_file('/etc/pivpn/wireguard/setupVars.conf', false);
 $ihome = $config['install_home'];
 $pro = str_replace($ihome."/configs/","", $pro);
 $pro = str_replace(".conf","", $pro);
-add_vpn_profile($pro);
+remove_vpn_profile($pro);
 //Run selected script, but only if it exists in the scr_up folder.
-function add_vpn_profile($profile) {
+function remove_vpn_profile($profile) {
        
     // Open a handle to expect in write mode
     $p = popen('sudo /usr/bin/expect','w');
@@ -35,7 +35,7 @@ function add_vpn_profile($profile) {
     // Read & delete the log
     $output = shell_exec("cat $log | sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g'");
     unlink($log);
-    print "Notification : $output ";
+    print $output;
     $output = explode("\n",$output);
 
 

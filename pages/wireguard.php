@@ -28,7 +28,7 @@ echo '';
     					echo'<tr><td class="hide-on-mobile" style="vertical-align: middle;"><a href="#" onClick="displayProfile(\''.$conf.'\')">'.basename($conf).'</a></td>
 							<td><button class="btn btn-sm btn-raised btn-default" onclick="qrProfile(\''.$conf.'\')">QR Code</button></td>
 							<td><a href="dlnd_profile.php?filename='.$file.'" class="btn btn-sm btn-raised btn-info">Download</a></td>
-							<td><button class="btn btn-sm btn-raised btn-warning" onclick="rProfile(\''.$conf.'\')">Remove</button></td></tr>';
+							<td><button class="btn btn-sm btn-raised btn-warning" onclick="removeProfile(\''.$conf.'\')">Remove</button></td></tr>';
     				}
     				?>
     			</tbody>

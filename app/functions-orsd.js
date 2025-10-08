@@ -389,7 +389,7 @@ function oProfile(){
 		},
 		success:function(result) {
 			load(false);
-			genModal("Profile creation status (" + user + "):", '<pre style="overscroll-y:scroll; max-height:400px;">' + result + "</pre>");
+			genModal("Profile creation status for <b>" + user + "</b>:", '<pre style="overscroll-y:scroll; max-height:400px;">' + result + "</pre>");
 			pageLoad('PiVPN');
 			
 		}
@@ -410,7 +410,7 @@ function rProfile(user){
 		},
 		success:function(result) {
 			load(false);
-			genModal("Profile removal status (" + user + "):", '<pre style="overscroll-y:scroll; max-height:400px;">' + result + "</pre>");
+			genModal("Profile removal status for <b>" + user + "</b>:", '<pre style="overscroll-y:scroll; max-height:400px;">' + result + "</pre>");
 			pageLoad('PiVPN');
 			
 		}
@@ -431,7 +431,7 @@ function qrProfile(filename){
 		},
 		success:function(result) {
 			load(false);
-			genModal("WireGuard Profile \"" + filename + "\" content:<br><small>Scan the QR code to view profile</small>", "<pre class=\"ativa-scroll\">" + result + "</pre>");
+			genModal("WireGuard Profile <b>" + filename + "</b> content:<br><small>Scan the QR code to view profile.</small>", "<pre class=\"ativa-scroll\">" + result + "</pre>");
 			
 		}
 		}).fail(function(e) {
@@ -442,11 +442,18 @@ function qrProfile(filename){
 	
 }
 function createProfile(){
-        profileForm = '<input class="form-control" type="text" placeholder="Profile name" name="profile_name" id="profile_name">';
-        profileForm += '<br /><br /> <button class="btn btn-sm btn-raised btn-info pull-right" type="button" onclick="oProfile();">Create Profile</button><br /><br />';
+    profileForm = '<input class="form-control" type="text" placeholder="Profile name" name="profile_name" id="profile_name">';
+    profileForm += '<br /><br /> <button class="btn btn-sm btn-raised btn-info pull-right" type="button" onclick="oProfile();">Create Profile</button><br /><br />';
 
 	genModal("Create new PiVPN Profile", profileForm);
 
+}
+function removeProfile(profile){
+	profileForm = 'Are you sure you want to remove the profile <b>' + profile + '</b>?<br /><br />';
+	profileForm += '<small>This will not remove the profile from any devices that have it installed, but will prevent it from connecting to the VPN server.</small><br /><br />';
+	profileForm += '<br /><br /> <button class="btn btn-sm btn-raised btn-warning pull-right" type="button" onclick="rProfile(\'' + profile + '\');">Remove Profile</button><br /><br />';
+
+	genModal("Remove PiVPN Profile", profileForm);
 }
 function displayLog(filename){
 	load(true)
@@ -478,7 +485,7 @@ function displayProfile(filename){
 		},
 		success:function(result) {
 			load(false);
-			genModal("WireGuard Profile \"" + filename + "\" content:<br><small>Copy and paste into a WireGuard .conf file to use</small>", "<pre class=\"ativa-scroll\">" + result + "</pre>");
+			genModal("WireGuard Profile <b>" + filename + "</b> content:<br><small>Copy and paste into a WireGuard conf file to use.</small>", "<pre class=\"ativa-scroll\">" + result + "</pre>");
 			
 		}
 		}).fail(function(e) {
